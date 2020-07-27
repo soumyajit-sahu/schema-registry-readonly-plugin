@@ -42,11 +42,7 @@ class PostRedirectWriterInterceptor implements WriterInterceptor {
             try {
                 context.proceed(); // let the MessageBodyWriter write the data
                 byte[] origResponseBytes = byteArrayOutputStream.toByteArray();
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-                Response origResponseObj = objectMapper.readValue(origResponseBytes, Response.class);
-                objectMapper = new ObjectMapper();
-                byte[] newResponseBytes = objectMapper.writeValueAsBytes(origResponseObj);
+                byte[] newResponseBytes = trimResponse(origResponseBytes);
                 origOutputStream.write(newResponseBytes);
             } finally {
                 context.setOutputStream(origOutputStream);
@@ -54,6 +50,22 @@ class PostRedirectWriterInterceptor implements WriterInterceptor {
         }
         else {
             context.proceed();
+        }
+    }
+
+    /*
+     * Convert a JSON response having more fields to just having 1 field (id)
+     */
+    private byte[] trimResponse(byte[] origResponseBytes) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            Response origResponseObj = objectMapper.readValue(origResponseBytes, Response.class);
+            objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsBytes(origResponseObj);
+        }
+        catch (IOException ex) {
+            throw new RuntimeException("Error while parsing output in PostRedirectWriterInterceptor plugin", ex);
         }
     }
 }
