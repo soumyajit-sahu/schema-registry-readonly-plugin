@@ -34,9 +34,7 @@ class PostRedirectWriterInterceptor implements WriterInterceptor {
 
     @Override
     public void aroundWriteTo(WriterInterceptorContext context) throws IOException, WebApplicationException {
-        if(context.getProperty("post_filter_redirected") != null &&
-        context.getEntity() instanceof Schema) {
-
+        if(context.getProperty("post_filter_redirected") != null && context.getEntity() instanceof Schema) {
             OutputStream origOutputStream = context.getOutputStream();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             context.setOutputStream(byteArrayOutputStream);
