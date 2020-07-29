@@ -27,6 +27,7 @@ public class PostRedirectFilter implements ContainerRequestFilter {
 
         if (restMethod.equals("POST") && uri.endsWith(redirectPostReqSuffix)) {
             final String uriSubstring = "/" + uri.substring(0, uri.length() - redirectPostReqSuffix.length());
+            requestContext.setProperty("post_filter_redirected", "true");
             requestContext.setRequestUri(URI.create(uriSubstring));
         }
     }

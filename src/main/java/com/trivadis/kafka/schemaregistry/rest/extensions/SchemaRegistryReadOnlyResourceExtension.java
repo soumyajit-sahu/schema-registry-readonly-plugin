@@ -7,6 +7,7 @@
 package com.trivadis.kafka.schemaregistry.rest.extensions;
 
 import com.trivadis.kafka.schemaregistry.rest.extensions.filter.PostRedirectFilter;
+import com.trivadis.kafka.schemaregistry.rest.extensions.interceptor.DynamicRegistrationForSubjectResource;
 import io.confluent.kafka.schemaregistry.rest.SchemaRegistryConfig;
 import io.confluent.kafka.schemaregistry.rest.extensions.SchemaRegistryResourceExtension;
 import io.confluent.kafka.schemaregistry.storage.SchemaRegistry;
@@ -26,6 +27,7 @@ public class SchemaRegistryReadOnlyResourceExtension
     ) {
         configurable.register(new PostRedirectFilter());
         configurable.register(new ModeFilter());
+        configurable.register(new DynamicRegistrationForSubjectResource());
     }
 
     @Override

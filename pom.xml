@@ -4,7 +4,7 @@
 
     <groupId>com.trivadis.kafka</groupId>
     <artifactId>schema-registry-readonly-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>2.1.0</version>
     <packaging>jar</packaging>
 
     <name>schema-registry-readonly-plugin</name>
